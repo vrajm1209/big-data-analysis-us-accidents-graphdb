@@ -1,0 +1,571 @@
+// Uniqueness constraints 
+CREATE CONSTRAINT ON (accident:Accident) ASSERT accident.AccidentID IS UNIQUE;
+CREATE CONSTRAINT ON (severitylevel:SeverityLevel) ASSERT severitylevel.Severity IS UNIQUE;
+CREATE CONSTRAINT ON (trafficcoordinates:TrafficCoordinates) ASSERT trafficcoordinates.TrafficCoordinates IS UNIQUE;
+CREATE CONSTRAINT ON (trafficduration:TrafficDuration) ASSERT trafficduration.TrafficDuration IS UNIQUE;
+CREATE CONSTRAINT ON (trafficdistance:TrafficDistance) ASSERT trafficdistance.Distance_miles IS UNIQUE;
+CREATE CONSTRAINT ON (streetnumber:StreetNumber) ASSERT streetnumber.Number IS UNIQUE;
+CREATE CONSTRAINT ON (street:Street) ASSERT street.Street IS UNIQUE;
+CREATE CONSTRAINT ON (sideofroad:SideOfRoad) ASSERT sideofroad.Side IS UNIQUE;
+CREATE CONSTRAINT ON (city:City) ASSERT city.City IS UNIQUE;
+CREATE CONSTRAINT ON (county:County) ASSERT county.County IS UNIQUE;
+CREATE CONSTRAINT ON (state:State) ASSERT state.State IS UNIQUE;
+CREATE CONSTRAINT ON (zipcode:Zipcode) ASSERT zipcode.Zipcode IS UNIQUE;
+CREATE CONSTRAINT ON (timezone:Timezone) ASSERT timezone.Timezone IS UNIQUE;
+CREATE CONSTRAINT ON (nearbyairportcode:NearbyAirportCode) ASSERT nearbyairportcode.AirportCode IS UNIQUE;
+CREATE CONSTRAINT ON (weathertimestamp:WeatherTimestamp) ASSERT weathertimestamp.WeatherTimestamp IS UNIQUE;
+CREATE CONSTRAINT ON (temperature:Temperature) ASSERT temperature.Temperature_F IS UNIQUE;
+CREATE CONSTRAINT ON (windchill:WindChill) ASSERT windchill.WindChill_F IS UNIQUE;
+CREATE CONSTRAINT ON (humidity:Humidity) ASSERT humidity.Humidity_Perc IS UNIQUE;
+CREATE CONSTRAINT ON (pressure:Pressure) ASSERT pressure.Pressure_PSI IS UNIQUE;
+CREATE CONSTRAINT ON (visibility:Visibility) ASSERT visibility.Visibility_miles IS UNIQUE;
+CREATE CONSTRAINT ON (winddirection:WindDirection) ASSERT winddirection.WindDirection IS UNIQUE;
+CREATE CONSTRAINT ON (windspeed:WindSpeed) ASSERT windspeed.WindSpeed_mph IS UNIQUE;
+CREATE CONSTRAINT ON (precipitation:Precipitation) ASSERT precipitation.Precipitation_inches IS UNIQUE;
+CREATE CONSTRAINT ON (weathercondition:WeatherCondition) ASSERT weathercondition.WeatherCondition IS UNIQUE;
+CREATE CONSTRAINT ON (amenity:Amenity) ASSERT amenity.Amenity IS UNIQUE;
+CREATE CONSTRAINT ON (bump:Bump) ASSERT bump.Bump IS UNIQUE;
+CREATE CONSTRAINT ON (crossing:Crossing) ASSERT crossing.Crossing IS UNIQUE;
+CREATE CONSTRAINT ON (giveway:GiveWay) ASSERT giveway.GiveWay IS UNIQUE;
+CREATE CONSTRAINT ON (junction:Junction) ASSERT junction.Junction IS UNIQUE;
+CREATE CONSTRAINT ON (noexit:NoExit) ASSERT noexit.NoExit IS UNIQUE;
+CREATE CONSTRAINT ON (railway:Railway) ASSERT railway.Railway IS UNIQUE;
+CREATE CONSTRAINT ON (roundabout:Roundabout) ASSERT roundabout.Roundabout IS UNIQUE;
+CREATE CONSTRAINT ON (station:Station) ASSERT station.Station IS UNIQUE;
+CREATE CONSTRAINT ON (stop:Stop) ASSERT stop.Stop IS UNIQUE;
+CREATE CONSTRAINT ON (trafficcalming:TrafficCalming) ASSERT trafficcalming.TrafficCalming IS UNIQUE;
+CREATE CONSTRAINT ON (trafficsignal:TrafficSignal) ASSERT trafficsignal.TrafficSignal IS UNIQUE;
+CREATE CONSTRAINT ON (turningloop:TurningLoop) ASSERT turningloop.TurningLoop IS UNIQUE;
+CREATE CONSTRAINT ON (periodofday:PeriodOfDay) ASSERT periodofday.SunriseSunset IS UNIQUE;
+CREATE CONSTRAINT ON (year:Year) ASSERT year.Year IS UNIQUE;
+//
+// Create ACCIDENT node
+:auto USING PERIODIC COMMIT 500
+LOAD CSV With HEADERS FROM 'file:///US_Accidents_cleaned.csv' AS row
+MERGE
+	(accident:Accident{AccidentID:row.ID})
+	ON CREATE SET accident.Description = row.Description;
+//
+// Create SEVERITY LEVEL node
+:auto USING PERIODIC COMMIT 500
+LOAD CSV With HEADERS FROM 'file:///US_Accidents_cleaned.csv' AS row
+MERGE
+	(severitylevel:SeverityLevel{Severity:row.Severity});
+//
+// Create TRAFFIC COORDINATES node
+:auto USING PERIODIC COMMIT 500
+LOAD CSV With HEADERS FROM 'file:///US_Accidents_cleaned.csv' AS row
+MERGE
+	(trafficcoordinates:TrafficCoordinates{TrafficCoordinates:row.TrafficCoordinates})
+	ON CREATE SET trafficcoordinates.StartLat = row.StartLat
+	ON CREATE SET trafficcoordinates.StartLng = row.StartLng
+	ON CREATE SET trafficcoordinates.EndLat = row.EndLat
+	ON CREATE SET trafficcoordinates.EndLng = row.EndLng;
+//
+// Create TRAFFIC DURATION node
+:auto USING PERIODIC COMMIT 500
+LOAD CSV With HEADERS FROM 'file:///US_Accidents_cleaned.csv' AS row
+MERGE
+	(trafficduration:TrafficDuration{TrafficDuration:row.TrafficDuration})
+	ON CREATE SET trafficduration.StartTime = row.StartTime
+	ON CREATE SET trafficduration.EndTime = row.EndTime;
+//
+// Create TRAFFIC DISTANCE node
+:auto USING PERIODIC COMMIT 500
+LOAD CSV With HEADERS FROM 'file:///US_Accidents_cleaned.csv' AS row
+MERGE
+	(trafficdistance:TrafficDistance{Distance_miles:row.Distance_mi});
+//
+// Create STREET NUMBER node
+:auto USING PERIODIC COMMIT 500
+LOAD CSV With HEADERS FROM 'file:///US_Accidents_cleaned.csv' AS row
+MERGE
+	(streetnumber:StreetNumber{Number:row.Number});
+//
+// Create STREET node
+:auto USING PERIODIC COMMIT 500
+LOAD CSV With HEADERS FROM 'file:///US_Accidents_cleaned.csv' AS row
+MERGE
+	(street:Street{Street:row.Street});
+//
+// Create SIDE OF ROAD node
+:auto USING PERIODIC COMMIT 500
+LOAD CSV With HEADERS FROM 'file:///US_Accidents_cleaned.csv' AS row
+MERGE
+	(sideofroad:SideOfRoad{Side:row.Side});
+//
+// Create CITY node
+:auto USING PERIODIC COMMIT 500
+LOAD CSV With HEADERS FROM 'file:///US_Accidents_cleaned.csv' AS row
+MERGE
+	(city:City{City:row.City});
+//
+// Create COUNTY node
+:auto USING PERIODIC COMMIT 500
+LOAD CSV With HEADERS FROM 'file:///US_Accidents_cleaned.csv' AS row
+MERGE
+	(county:County{County:row.County});
+//
+// Create STATE node
+:auto USING PERIODIC COMMIT 500
+LOAD CSV With HEADERS FROM 'file:///US_Accidents_cleaned.csv' AS row
+MERGE
+	(state:State{State:row.State});
+//
+// Create ZIPCODE node
+:auto USING PERIODIC COMMIT 500
+LOAD CSV With HEADERS FROM 'file:///US_Accidents_cleaned.csv' AS row
+MERGE
+	(zipcode:Zipcode{Zipcode:row.Zipcode});
+//
+// Create TIMEZONE node
+:auto USING PERIODIC COMMIT 500
+LOAD CSV With HEADERS FROM 'file:///US_Accidents_cleaned.csv' AS row
+MERGE
+	(timezone:Timezone{Timezone:row.Timezone});
+//
+// Create NEARBY AIRPORT CODE node
+:auto USING PERIODIC COMMIT 500
+LOAD CSV With HEADERS FROM 'file:///US_Accidents_cleaned.csv' AS row
+MERGE
+	(nearbyairportcode:NearbyAirportCode{AirportCode:row.AirportCode});
+//
+// Create WEATHER TIMESTAMP node
+:auto USING PERIODIC COMMIT 500
+LOAD CSV With HEADERS FROM 'file:///US_Accidents_cleaned.csv' AS row
+MERGE
+	(weathertimestamp:WeatherTimestamp{WeatherTimestamp:row.WeatherTimestamp});
+//
+// Create TEMPERATURE node
+:auto USING PERIODIC COMMIT 500
+LOAD CSV With HEADERS FROM 'file:///US_Accidents_cleaned.csv' AS row
+MERGE
+	(temperature:Temperature{Temperature_F:row.Temperature_F});
+//
+// Create WIND CHILL node
+:auto USING PERIODIC COMMIT 500
+LOAD CSV With HEADERS FROM 'file:///US_Accidents_cleaned.csv' AS row
+MERGE
+	(windchill:WindChill{WindChill_F:row.WindChill_F});
+//
+// Create HUMIDITY node
+:auto USING PERIODIC COMMIT 500
+LOAD CSV With HEADERS FROM 'file:///US_Accidents_cleaned.csv' AS row
+MERGE
+	(humidity:Humidity{Humidity_Perc:row.Humidity_Perc});
+//
+// Create PRESSURE node
+:auto USING PERIODIC COMMIT 500
+LOAD CSV With HEADERS FROM 'file:///US_Accidents_cleaned.csv' AS row
+MERGE
+	(pressure:Pressure{Pressure_PSI:row.Pressure_in});
+//
+// Create VISIBILITY node
+:auto USING PERIODIC COMMIT 500
+LOAD CSV With HEADERS FROM 'file:///US_Accidents_cleaned.csv' AS row
+MERGE
+	(visibility:Visibility{Visibility_miles:row.Visibility_mi});
+//
+// Create WIND DIRECTION node
+:auto USING PERIODIC COMMIT 500
+LOAD CSV With HEADERS FROM 'file:///US_Accidents_cleaned.csv' AS row
+MERGE
+	(winddirection:WindDirection{WindDirection:row.WindDirection});
+//
+// Create WIND SPEED node
+:auto USING PERIODIC COMMIT 500
+LOAD CSV With HEADERS FROM 'file:///US_Accidents_cleaned.csv' AS row
+MERGE
+	(windspeed:WindSpeed{WindSpeed_mph:row.WindSpeed_mph});
+//
+// Create PRECIPITATION node
+:auto USING PERIODIC COMMIT 500
+LOAD CSV With HEADERS FROM 'file:///US_Accidents_cleaned.csv' AS row
+MERGE
+	(precipitation:Precipitation{Precipitation_inches:row.Precipitation_in});
+//
+// Create WEATHER CONDITION node
+:auto USING PERIODIC COMMIT 500
+LOAD CSV With HEADERS FROM 'file:///US_Accidents_cleaned.csv' AS row
+MERGE
+	(weathercondition:WeatherCondition{WeatherCondition:row.WeatherCondition});
+//
+// Create AMENITY node
+:auto USING PERIODIC COMMIT 500
+LOAD CSV With HEADERS FROM 'file:///US_Accidents_cleaned.csv' AS row
+MERGE
+	(amenity:Amenity{Amenity:row.Amenity});
+//
+// Create AMENITY node
+:auto USING PERIODIC COMMIT 500
+LOAD CSV With HEADERS FROM 'file:///US_Accidents_cleaned.csv' AS row
+MERGE
+	(amenity:Amenity{Amenity:row.Amenity});
+//
+// Create BUMP node
+:auto USING PERIODIC COMMIT 500
+LOAD CSV With HEADERS FROM 'file:///US_Accidents_cleaned.csv' AS row
+MERGE
+	(bump:Bump{Bump:row.Bump});
+//
+// Create CROSSING node
+:auto USING PERIODIC COMMIT 500
+LOAD CSV With HEADERS FROM 'file:///US_Accidents_cleaned.csv' AS row
+MERGE
+	(crossing:Crossing{Crossing:row.Crossing});
+//
+// Create GIVE WAY node
+:auto USING PERIODIC COMMIT 500
+LOAD CSV With HEADERS FROM 'file:///US_Accidents_cleaned.csv' AS row
+MERGE
+	(giveway:GiveWay{GiveWay:row.GiveWay});
+//
+// Create JUNCTION node
+:auto USING PERIODIC COMMIT 500
+LOAD CSV With HEADERS FROM 'file:///US_Accidents_cleaned.csv' AS row
+MERGE
+	(junction:Junction{Junction:row.Junction});
+//
+// Create NO EXIT node
+:auto USING PERIODIC COMMIT 500
+LOAD CSV With HEADERS FROM 'file:///US_Accidents_cleaned.csv' AS row
+MERGE
+	(noexit:NoExit{NoExit:row.NoExit});
+//
+// Create RAILWAY node
+:auto USING PERIODIC COMMIT 500
+LOAD CSV With HEADERS FROM 'file:///US_Accidents_cleaned.csv' AS row
+MERGE
+	(railway:Railway{Railway:row.Railway});
+//
+// Create ROUNDABOUT node
+:auto USING PERIODIC COMMIT 500
+LOAD CSV With HEADERS FROM 'file:///US_Accidents_cleaned.csv' AS row
+MERGE
+	(roundabout:Roundabout{Roundabout:row.Roundabout});
+//
+// Create STATION node
+:auto USING PERIODIC COMMIT 500
+LOAD CSV With HEADERS FROM 'file:///US_Accidents_cleaned.csv' AS row
+MERGE
+	(station:Station{Station:row.Station});
+//
+// Create STOP node
+:auto USING PERIODIC COMMIT 500
+LOAD CSV With HEADERS FROM 'file:///US_Accidents_cleaned.csv' AS row
+MERGE
+	(stop:Stop{Stop:row.Stop});
+//
+// Create TRAFFIC CALMING node
+:auto USING PERIODIC COMMIT 500
+LOAD CSV With HEADERS FROM 'file:///US_Accidents_cleaned.csv' AS row
+MERGE
+	(trafficcalming:TrafficCalming{TrafficCalming:row.TrafficCalming});
+//
+// Create TRAFFIC SIGNAL node
+:auto USING PERIODIC COMMIT 500
+LOAD CSV With HEADERS FROM 'file:///US_Accidents_cleaned.csv' AS row
+MERGE
+	(trafficsignal:TrafficSignal{TrafficSignal:row.TrafficSignal});
+//
+// Create TURNING LOOP node
+:auto USING PERIODIC COMMIT 500
+LOAD CSV With HEADERS FROM 'file:///US_Accidents_cleaned.csv' AS row
+MERGE
+	(turningloop:TurningLoop{TurningLoop:row.TurningLoop});
+//
+// Create PERIOD OF DAY node
+:auto USING PERIODIC COMMIT 500
+LOAD CSV With HEADERS FROM 'file:///US_Accidents_cleaned.csv' AS row
+MERGE
+	(periodofday:PeriodOfDay{SunriseSunset:row.SunriseSunset});
+//
+// Create YEAR node
+:auto USING PERIODIC COMMIT 500
+LOAD CSV With HEADERS FROM 'file:///US_Accidents_cleaned.csv' AS row
+MERGE
+	(year:Year{Year:row.AccidentYear});
+//
+// Create relationships
+// Relationship: With A
+:auto USING PERIODIC COMMIT 500
+LOAD CSV With HEADERS FROM 'file:///US_Accidents_cleaned.csv' AS row
+	MATCH (severitylevel:SeverityLevel {Severity: row.Severity})
+	MATCH (accident:Accident {AccidentID: row.ID})
+	MERGE (accident)-[:WITH_A]->(severitylevel);
+// Relationship: At
+:auto USING PERIODIC COMMIT 500
+LOAD CSV With HEADERS FROM 'file:///US_Accidents_cleaned.csv' AS row
+	MATCH (county:County {County: row.County})
+	MATCH (accident:Accident {AccidentID: row.ID})
+	MERGE (accident)-[:AT]->(county);
+// Relationship: Street Zipcode
+:auto USING PERIODIC COMMIT 500
+LOAD CSV With HEADERS FROM 'file:///US_Accidents_cleaned.csv' AS row
+	MATCH (zipcode:Zipcode {Zipcode: row.Zipcode})
+	MATCH (county:County {County: row.County})
+	MERGE (county)-[:STREET_ZIPCODE]->(zipcode);
+// Relationship: Street Number
+:auto USING PERIODIC COMMIT 500
+LOAD CSV With HEADERS FROM 'file:///US_Accidents_cleaned.csv' AS row
+	MATCH (streetnumber:StreetNumber {Number: row.Number})
+	MATCH (county:County {County: row.County})
+	MERGE (county)-[:STREET_NUMBER]->(streetnumber);
+// Relationship: Street Name
+:auto USING PERIODIC COMMIT 500
+LOAD CSV With HEADERS FROM 'file:///US_Accidents_cleaned.csv' AS row
+	MATCH (street:Street {Street: row.Street})
+	MATCH (county:County {County: row.County})
+	MERGE (county)-[:STREET_NAME]->(street);
+// Relationship: In State
+:auto USING PERIODIC COMMIT 500
+LOAD CSV With HEADERS FROM 'file:///US_Accidents_cleaned.csv' AS row
+	MATCH (state:State {State: row.State})
+	MATCH (accident:Accident {AccidentID: row.ID})
+	MERGE (accident)-[:IN_STATE]->(state);
+// Relationship: Part Of
+:auto USING PERIODIC COMMIT 500
+LOAD CSV With HEADERS FROM 'file:///US_Accidents_cleaned.csv' AS row
+	MATCH (city:City {City: row.City})
+	MATCH (state:State {State: row.State})
+	MERGE (state)-[:PART_OF]->(city);
+// Relationship: In City
+:auto USING PERIODIC COMMIT 500
+LOAD CSV With HEADERS FROM 'file:///US_Accidents_cleaned.csv' AS row
+	MATCH (city:City {City: row.City})
+	MATCH (accident:Accident {AccidentID: row.ID})
+	MERGE (accident)-[:IN_CITY]->(city);
+// Relationship: In Timezone
+:auto USING PERIODIC COMMIT 500
+LOAD CSV With HEADERS FROM 'file:///US_Accidents_cleaned.csv' AS row
+	MATCH (timezone:Timezone {Timezone: row.Timezone})
+	MATCH (accident:Accident {AccidentID: row.ID})
+	MERGE (accident)-[:IN_TIMEZONE]->(timezone);
+// Relationship: On
+:auto USING PERIODIC COMMIT 500
+LOAD CSV With HEADERS FROM 'file:///US_Accidents_cleaned.csv' AS row
+	MATCH (sideofroad:SideOfRoad {Side: row.Side})
+	MATCH (accident:Accident {AccidentID: row.ID})
+	MERGE (accident)-[:ON]->(sideofroad);
+// Relationship: Created A
+:auto USING PERIODIC COMMIT 500
+LOAD CSV With HEADERS FROM 'file:///US_Accidents_cleaned.csv' AS row
+	MATCH (trafficdistance:TrafficDistance {Distance_miles: row.Distance_mi})
+	MATCH (accident:Accident {AccidentID: row.ID})
+	MERGE (accident)-[:CREATED_A]->(trafficdistance);
+// Relationship: Between
+:auto USING PERIODIC COMMIT 500
+LOAD CSV With HEADERS FROM 'file:///US_Accidents_cleaned.csv' AS row
+	MATCH (trafficcoordinates:TrafficCoordinates {TrafficCoordinates: row.TrafficCoordinates})
+	MATCH (accident:Accident {AccidentID: row.ID})
+	MERGE (accident)-[:BETWEEN]->(trafficcoordinates);
+// Relationship: For A
+:auto USING PERIODIC COMMIT 500
+LOAD CSV With HEADERS FROM 'file:///US_Accidents_cleaned.csv' AS row
+	MATCH (trafficduration:TrafficDuration {TrafficDuration: row.TrafficDuration})
+	MATCH (accident:Accident {AccidentID: row.ID})
+	MERGE (accident)-[:FOR_A]->(trafficduration);
+// Relationship: In
+:auto USING PERIODIC COMMIT 500
+LOAD CSV With HEADERS FROM 'file:///US_Accidents_cleaned.csv' AS row
+	MATCH (year:Year {Year: row.AccidentYear})
+	MATCH (accident:Accident {AccidentID: row.ID})
+	MERGE (accident)-[:IN]->(year);
+// Relationship: Near Airport
+:auto USING PERIODIC COMMIT 500
+LOAD CSV With HEADERS FROM 'file:///US_Accidents_cleaned.csv' AS row
+	MATCH (nearbyairportcode:NearbyAirportCode {AirportCode: row.AirportCode})
+	MATCH (accident:Accident {AccidentID: row.ID})
+	MERGE (accident)-[:NEAR_AIRPORT]->(nearbyairportcode);
+// Relationship: During
+:auto USING PERIODIC COMMIT 500
+LOAD CSV With HEADERS FROM 'file:///US_Accidents_cleaned.csv' AS row
+	MATCH (periodofday:PeriodOfDay {SunriseSunset: row.SunriseSunset})
+	MATCH (accident:Accident {AccidentID: row.ID})
+	MERGE (accident)-[:DURING]->(periodofday);
+// Relationship: Wind Speed
+:auto USING PERIODIC COMMIT 500
+LOAD CSV With HEADERS FROM 'file:///US_Accidents_cleaned.csv' AS row
+	MATCH (windspeed:WindSpeed {WindSpeed_mph: row.WindSpeed_mph})
+	MATCH (accident:Accident {AccidentID: row.ID})
+	MERGE (accident)-[:WIND_SPEED]->(windspeed);
+// Relationship: Wind Direction
+:auto USING PERIODIC COMMIT 500
+LOAD CSV With HEADERS FROM 'file:///US_Accidents_cleaned.csv' AS row
+	MATCH (winddirection:WindDirection {WindDirection: row.WindDirection})
+	MATCH (accident:Accident {AccidentID: row.ID})
+	MERGE (accident)-[:WIND_DIRECTION]->(winddirection);
+// Relationship: Wind Chill
+:auto USING PERIODIC COMMIT 500
+LOAD CSV With HEADERS FROM 'file:///US_Accidents_cleaned.csv' AS row
+	MATCH (windchill:WindChill {WindChill_F: row.WindChill_F})
+	MATCH (accident:Accident {AccidentID: row.ID})
+	MERGE (accident)-[:WIND_CHILL]->(windchill);
+// Relationship: Weather Pressure
+:auto USING PERIODIC COMMIT 500
+LOAD CSV With HEADERS FROM 'file:///US_Accidents_cleaned.csv' AS row
+	MATCH (pressure:Pressure {Pressure_PSI: row.Pressure_in})
+	MATCH (accident:Accident {AccidentID: row.ID})
+	MERGE (accident)-[:WEATHER_PRESSURE]->(pressure);
+// Relationship: Weather Humidity
+:auto USING PERIODIC COMMIT 500
+LOAD CSV With HEADERS FROM 'file:///US_Accidents_cleaned.csv' AS row
+	MATCH (humidity:Humidity {Humidity_Perc: row.Humidity_Perc})
+	MATCH (accident:Accident {AccidentID: row.ID})
+	MERGE (accident)-[:WEATHER_HUMIDITY]->(humidity);
+// Relationship: Weather Visibility
+:auto USING PERIODIC COMMIT 500
+LOAD CSV With HEADERS FROM 'file:///US_Accidents_cleaned.csv' AS row
+	MATCH (visibility:Visibility {Visibility_miles: row.Visibility_mi})
+	MATCH (accident:Accident {AccidentID: row.ID})
+	MERGE (accident)-[:WEATHER_VISIBILITY]->(visibility);
+// Relationship: Weather Temperature
+:auto USING PERIODIC COMMIT 500
+LOAD CSV With HEADERS FROM 'file:///US_Accidents_cleaned.csv' AS row
+	MATCH (temperature:Temperature {Temperature_F: row.Temperature_F})
+	MATCH (accident:Accident {AccidentID: row.ID})
+	MERGE (accident)-[:WEATHER_TEMPERATURE]->(temperature);
+// Relationship: Weather Precipitation
+:auto USING PERIODIC COMMIT 500
+LOAD CSV With HEADERS FROM 'file:///US_Accidents_cleaned.csv' AS row
+	MATCH (precipitation:Precipitation {Precipitation_inches: row.Precipitation_in})
+	MATCH (accident:Accident {AccidentID: row.ID})
+	MERGE (accident)-[:WEATHER_PRECIPTATION]->(precipitation);
+// Relationship: Weather Condition
+:auto USING PERIODIC COMMIT 500
+LOAD CSV With HEADERS FROM 'file:///US_Accidents_cleaned.csv' AS row
+	MATCH (weathercondition:WeatherCondition {WeatherCondition: row.WeatherCondition})
+	MATCH (accident:Accident {AccidentID: row.ID})
+	MERGE (accident)-[:WEATHER_CONDITION]->(weathercondition);
+// Relationship: Recorded At
+:auto USING PERIODIC COMMIT 500
+LOAD CSV With HEADERS FROM 'file:///US_Accidents_cleaned.csv' AS row
+	MATCH (weathertimestamp:WeatherTimestamp {WeatherTimestamp: row.WeatherTimestamp})
+	MATCH (windspeed:WindSpeed {WindSpeed_mph: row.WindSpeed_mph})
+	MERGE (windspeed)-[:RECORDED_AT]->(weathertimestamp);
+// Relationship: Recorded At
+:auto USING PERIODIC COMMIT 500
+LOAD CSV With HEADERS FROM 'file:///US_Accidents_cleaned.csv' AS row
+	MATCH (weathertimestamp:WeatherTimestamp {WeatherTimestamp: row.WeatherTimestamp})
+	MATCH (winddirection:WindDirection {WindDirection: row.WindDirection})
+	MERGE (winddirection)-[:RECORDED_AT]->(weathertimestamp);
+// Relationship: Recorded At
+:auto USING PERIODIC COMMIT 500
+LOAD CSV With HEADERS FROM 'file:///US_Accidents_cleaned.csv' AS row
+	MATCH (weathertimestamp:WeatherTimestamp {WeatherTimestamp: row.WeatherTimestamp})
+	MATCH (windchill:WindChill {WindChill_F: row.WindChill_F})
+	MERGE (windchill)-[:RECORDED_AT]->(weathertimestamp);
+// Relationship: Recorded At
+:auto USING PERIODIC COMMIT 500
+LOAD CSV With HEADERS FROM 'file:///US_Accidents_cleaned.csv' AS row
+	MATCH (weathertimestamp:WeatherTimestamp {WeatherTimestamp: row.WeatherTimestamp})
+	MATCH (pressure:Pressure {Pressure_PSI: row.Pressure_in})
+	MERGE (pressure)-[:RECORDED_AT]->(weathertimestamp);
+// Relationship: Recorded At
+:auto USING PERIODIC COMMIT 500
+LOAD CSV With HEADERS FROM 'file:///US_Accidents_cleaned.csv' AS row
+	MATCH (weathertimestamp:WeatherTimestamp {WeatherTimestamp: row.WeatherTimestamp})
+	MATCH (humidity:Humidity {Humidity_Perc: row.Humidity_Perc})
+	MERGE (humidity)-[:RECORDED_AT]->(weathertimestamp);
+// Relationship: Recorded At
+:auto USING PERIODIC COMMIT 500
+LOAD CSV With HEADERS FROM 'file:///US_Accidents_cleaned.csv' AS row
+	MATCH (weathertimestamp:WeatherTimestamp {WeatherTimestamp: row.WeatherTimestamp})
+	MATCH (visibility:Visibility {Visibility_miles: row.Visibility_mi})
+	MERGE (visibility)-[:RECORDED_AT]->(weathertimestamp);
+// Relationship: Recorded At
+:auto USING PERIODIC COMMIT 500
+LOAD CSV With HEADERS FROM 'file:///US_Accidents_cleaned.csv' AS row
+	MATCH (weathertimestamp:WeatherTimestamp {WeatherTimestamp: row.WeatherTimestamp})
+	MATCH (temperature:Temperature {Temperature_F: row.Temperature_F})
+	MERGE (temperature)-[:RECORDED_AT]->(weathertimestamp);
+// Relationship: Recorded At
+:auto USING PERIODIC COMMIT 500
+LOAD CSV With HEADERS FROM 'file:///US_Accidents_cleaned.csv' AS row
+	MATCH (weathertimestamp:WeatherTimestamp {WeatherTimestamp: row.WeatherTimestamp})
+	MATCH (precipitation:Precipitation {Precipitation_inches: row.Precipitation_in})
+	MERGE (precipitation)-[:RECORDED_AT]->(weathertimestamp);
+// Relationship: Recorded At
+:auto USING PERIODIC COMMIT 500
+LOAD CSV With HEADERS FROM 'file:///US_Accidents_cleaned.csv' AS row
+	MATCH (weathertimestamp:WeatherTimestamp {WeatherTimestamp: row.WeatherTimestamp})
+	MATCH (weathercondition:WeatherCondition {WeatherCondition: row.WeatherCondition})
+	MERGE (weathercondition)-[:RECORDED_AT]->(weathertimestamp);
+// Relationship: Near Calming
+:auto USING PERIODIC COMMIT 500
+LOAD CSV With HEADERS FROM 'file:///US_Accidents_cleaned.csv' AS row
+	MATCH (trafficcalming:TrafficCalming {TrafficCalming: row.TrafficCalming})
+	MATCH (accident:Accident {AccidentID: row.ID})
+	MERGE (accident)-[:NEAR_CALMING]->(trafficcalming);
+// Relationship: Near Bump
+:auto USING PERIODIC COMMIT 500
+LOAD CSV With HEADERS FROM 'file:///US_Accidents_cleaned.csv' AS row
+	MATCH (bump:Bump {Bump: row.Bump})
+	MATCH (accident:Accident {AccidentID: row.ID})
+	MERGE (accident)-[:NEAR_BUMP]->(bump);
+// Relationship: Near Junction
+:auto USING PERIODIC COMMIT 500
+LOAD CSV With HEADERS FROM 'file:///US_Accidents_cleaned.csv' AS row
+	MATCH (junction:Junction {Junction: row.Junction})
+	MATCH (accident:Accident {AccidentID: row.ID})
+	MERGE (accident)-[:NEAR_JUNCTION]->(junction);
+// Relationship: Near Station
+:auto USING PERIODIC COMMIT 500
+LOAD CSV With HEADERS FROM 'file:///US_Accidents_cleaned.csv' AS row
+	MATCH (station:Station {Station: row.Station})
+	MATCH (accident:Accident {AccidentID: row.ID})
+	MERGE (accident)-[:NEAR_STATION]->(station);
+// Relationship: Near Signal
+:auto USING PERIODIC COMMIT 500
+LOAD CSV With HEADERS FROM 'file:///US_Accidents_cleaned.csv' AS row
+	MATCH (trafficsignal:TrafficSignal {TrafficSignal: row.TrafficSignal})
+	MATCH (accident:Accident {AccidentID: row.ID})
+	MERGE (accident)-[:NEAR_SIGNAL]->(trafficsignal);
+// Relationship: Near Noexit
+:auto USING PERIODIC COMMIT 500
+LOAD CSV With HEADERS FROM 'file:///US_Accidents_cleaned.csv' AS row
+	MATCH (noexit:NoExit {NoExit: row.NoExit})
+	MATCH (accident:Accident {AccidentID: row.ID})
+	MERGE (accident)-[:NEAR_NOEXIT]->(noexit);
+// Relationship: Near Crossing
+:auto USING PERIODIC COMMIT 500
+LOAD CSV With HEADERS FROM 'file:///US_Accidents_cleaned.csv' AS row
+	MATCH (crossing:Crossing {Crossing: row.Crossing})
+	MATCH (accident:Accident {AccidentID: row.ID})
+	MERGE (accident)-[:NEAR_CROSSING]->(crossing);
+// Relationship: Near Giveway
+:auto USING PERIODIC COMMIT 500
+LOAD CSV With HEADERS FROM 'file:///US_Accidents_cleaned.csv' AS row
+	MATCH (giveway:GiveWay {GiveWay: row.GiveWay})
+	MATCH (accident:Accident {AccidentID: row.ID})
+	MERGE (accident)-[:NEAR_GIVEWAY]->(giveway);
+// Relationship: Near Turning
+:auto USING PERIODIC COMMIT 500
+LOAD CSV With HEADERS FROM 'file:///US_Accidents_cleaned.csv' AS row
+	MATCH (turningloop:TurningLoop {TurningLoop: row.TurningLoop})
+	MATCH (accident:Accident {AccidentID: row.ID})
+	MERGE (accident)-[:NEAR_TURNING]->(turningloop);
+// Relationship: Near Railway
+:auto USING PERIODIC COMMIT 500
+LOAD CSV With HEADERS FROM 'file:///US_Accidents_cleaned.csv' AS row
+	MATCH (railway:Railway {Railway: row.Railway})
+	MATCH (accident:Accident {AccidentID: row.ID})
+	MERGE (accident)-[:NEAR_RAILWAY]->(railway);
+// Relationship: Near Round
+:auto USING PERIODIC COMMIT 500
+LOAD CSV With HEADERS FROM 'file:///US_Accidents_cleaned.csv' AS row
+	MATCH (roundabout:Roundabout {Roundabout: row.Roundabout})
+	MATCH (accident:Accident {AccidentID: row.ID})
+	MERGE (accident)-[:NEAR_ROUND]->(roundabout);
+// Relationship: Near Amenity
+:auto USING PERIODIC COMMIT 500
+LOAD CSV With HEADERS FROM 'file:///US_Accidents_cleaned.csv' AS row
+	MATCH (amenity:Amenity {Amenity: row.Amenity})
+	MATCH (accident:Accident {AccidentID: row.ID})
+	MERGE (accident)-[:NEAR_AMENITY]->(amenity);
+// Relationship: Near Stop
+:auto USING PERIODIC COMMIT 500
+LOAD CSV With HEADERS FROM 'file:///US_Accidents_cleaned.csv' AS row
+	MATCH (stop:Stop {Stop: row.Stop})
+	MATCH (accident:Accident {AccidentID: row.ID})
+	MERGE (accident)-[:NEAR_STOP]->(stop);
